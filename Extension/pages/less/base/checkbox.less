@@ -1,0 +1,70 @@
+.checkbox-custom {
+    margin: 0;
+    font-weight: 400;
+    input[type=checkbox] {
+        /* IE cannot fire events if display none or visibility hidden */
+        position: absolute !important;
+        left: -99999px !important;
+    }
+
+//    &.highlight {
+//        padding: 4px 4px 4px 24px;
+//
+//        &.checked {
+//            background: #e9e9e9;
+//        }
+//    }
+
+    .checkbox-i{
+        display: inline-block;
+        vertical-align: top;
+        background: url(../i/sprites/form.png) no-repeat;
+        width: 19px;
+        height: 19px;
+        cursor: pointer;
+
+        &.checked {
+            background-position: 0 -30px;
+        }
+
+        &.disabled {
+            background-position: 0 -60px;
+
+            &.checked {
+                background-position: 0 -90px;
+            }
+        }
+    }
+}
+
+.checkbox-label{
+    cursor: pointer;
+}
+
+//.checkbox-custom:hover {
+//    i {
+//        background-position: -16px 1px;
+//
+//        &.checked {
+//            background-position: -32px 1px;
+//        }
+//
+//        &.disabled {
+//            background-position: -64px 1px;
+//
+//            &.checked {
+//                background-position: -80px 1px;
+//            }
+//        }
+//    }
+//}
+
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    .checkbox-custom {
+        .checkbox-i{
+            background-image: url(../i/sprites/form@2x.png);
+            background-size: 49px auto;
+        }
+    }
+}

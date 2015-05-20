@@ -1,0 +1,47 @@
+// Slide navigation
+
+
+.slide-nav{
+    position: relative;
+    overflow: hidden;
+    min-width: 200px; // 0
+    transform: translateZ(0);
+    transition: height .2s ease;
+
+    &_page{
+        position: relative;
+        left: 0;
+        transition: transform .2s linear;
+        .slide-nav_page{
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            width: 100%;
+            min-width: 100%;
+        }
+    }
+
+    &_back,
+    &_link{
+        cursor: pointer;
+    }
+
+    &_page&__prev-page{
+        left: -100%;
+    }
+    &_page &_page&__prev-page{
+        left: 0;
+    }
+    .csstransforms3d &_page&__prev-page{
+        left: 0;
+        transform: translate3d(-200px, 0, 0); // -100%
+    }
+    .csstransforms3d &_page &_page&__prev-page{
+        left: 100%;
+    }
+
+    &_page&__current-page{
+        display: block;
+    }
+}

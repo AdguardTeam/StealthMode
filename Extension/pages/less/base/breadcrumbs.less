@@ -1,0 +1,27 @@
+// breadcrumbs
+
+
+.breadcrumbs{
+    margin: 0 0 11px;
+    font-size: 0;
+    &_i{
+        display: inline-block;
+        font-size: 13px;
+        line-height: 1.2;
+        color: #a7a7a7;
+    }
+    &_sep{
+        margin: 0 13px;
+        color: #000;
+        &:before{
+            content: '›';
+        }
+    }
+    &_link{
+        text-decoration: none;
+        &:hover{
+            text-decoration: none;
+            border-bottom: 1px solid fade(#000, 40);
+        }
+    }
+}

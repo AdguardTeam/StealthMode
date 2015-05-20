@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_name__",
+  "short_name": "__MSG_short_name__",
+  "version": "STEALTH_VERSION",
+  "default_locale": "en",
+  "description": "__MSG_description__",
+  "icons": {
+    "32": "icons/32.png",
+    "64": "icons/64.png",
+    "128": "icons/128.png"
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/gray-19.png",
+      "38": "icons/gray-38.png"
+    },
+    "default_title": "__MSG_short_name__",
+    "default_popup": "pages/popup.html"
+  },
+  "background": {
+    "page": "background.html"
+  },
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "js": [
+        "lib/preload.js"
+      ],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "minimum_chrome_version": "22",
+  "options_page": "pages/options.html",
+  "permissions": [
+    "tabs",
+    "http://*/*",
+    "https://*/*",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "unlimitedStorage"
+  ]
+}

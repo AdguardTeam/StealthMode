@@ -1,0 +1,60 @@
+//
+// Dropdowns
+// --------------------------------------------------
+
+
+.dropdown{
+    position: relative;
+    &.open{
+        > .d-popup{
+            display: block;
+        }
+        > .d-switch .d-caret{
+            border-top-width: 0;
+            border-bottom-width: 5px;
+        }
+    }
+    &.bottom-up{
+        .d-popup{
+            top: auto;
+            bottom: 100%;
+        }
+    }
+}
+.d-switch{
+    position: relative;
+    cursor: pointer;
+    &:hover{
+        > .d-caret{
+            opacity: 1;
+        }
+    }
+}
+.d-caret{
+    position: relative;
+    display: inline-block;
+    border: 5px solid;
+    border-color: #000 transparent;
+    border-bottom-width: 0;
+    font: 0/0 a;
+    opacity: .7;
+}
+.d-popup{
+    position: absolute;
+    z-index: 100;
+    top: 100%;
+    left: 0;
+    min-width: 100%;
+    display: none;
+}
+.d-popup-cont{
+    padding: 5px 15px;
+    border: 1px solid #dcdcdc;
+    background: #fff;
+}
+.d-popup-tail{
+    font: 0/0 a;
+    position: absolute;
+    bottom: 100%;
+    background-repeat: no-repeat;
+}

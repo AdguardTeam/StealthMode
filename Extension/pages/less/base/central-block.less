@@ -1,0 +1,25 @@
+// Central block align
+
+
+.central-block{
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0;
+    &:after{
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        height: 100%;
+        width: 0;
+    }
+}
+.central-block-cont{
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    white-space: normal;
+    text-align: left;
+    font-size: @font-size-base;
+}

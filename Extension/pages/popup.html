@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html style="height: auto;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Stealth</title>
+
+    <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/jquery.mousewheel.min.js"></script>
+    <script src="js/lib/jquery.jscrollpane.min.js"></script>
+    <link rel="stylesheet" href="skin/css/style.css">
+    <script src="js/i18n.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/popup.js"></script>
+</head>
+<body class="popup-body">
+
+<div class="popup-header cf macoshackresize">
+    <div class="popup-logo logo"></div>
+
+    <div id="changeFilteringState" class="popup-settings popup-power-off"><i class="fa fa-power-off"></i></div>
+    <div id="openSettings" class="popup-settings"><i class="fa fa-cog"></i></div>
+</div>
+
+
+<div id="filteringEnabled" class="popup-main" style="display: none;">
+
+    <div class="popup-stat">
+        <div class="popup-stat_head" i18n="popup_trackers_blocked"></div>
+
+        <div class="popup-stat_list">
+            <div class="popup-stat_i"><b id="blockedTab"></b> <span i18n="popup_trackers_blocked_page"></span></div>
+            <div class="popup-stat_i"><b id="blocked"></b> <span i18n="popup_trackers_blocked_all"></span></div>
+        </div>
+    </div>
+
+    <div class="popup-action">
+        <button id="whiteListDomain" class="btn btn-primary"></button>
+    </div>
+
+</div>
+
+<div id="filteringDisabled" class="popup-main" style="display: none;">
+
+    <div class="popup-stat">
+        <div class="popup-stat_head" i18n="popup_filtering_disabled"></div>
+    </div>
+
+    <div class="popup-action">
+        <button class="btn btn-primary" i18n="popup_enable_filtering"></button>
+    </div>
+
+</div>
+
+
+</body>
+</html>
