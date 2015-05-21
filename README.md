@@ -31,6 +31,6 @@ Its database contains over 5000 different trackers and is regularly updated;
 
 ##Why is it better?
 
-The major difference between Stealth Mode and popular blockers like ABP, Adguard, Ghostery and others, is that it takes a completely different approach to achieveing online privacy. It doesn't physically block all the trackers. Instead, Stealth Mode simply prevents them from collecting any information. This turns into an advantage, because since all cookies and ETags are being blocked, even if a tracker has not been added to the database yet, it still won't be able to get any information, making Stealth Mode a more reliable solution. 
+The major difference between Stealth Mode and popular blockers like ABP, Adguard, Ghostery and others, is that it takes a completely different approach to achieving online privacy. It doesn't physically block all the trackers. Instead, Stealth Mode simply prevents them from collecting any information. This turns into an advantage, because since all cookies and ETags are being blocked, even if a tracker has not been added to the database yet, it still won't be able to get any information, making Stealth Mode a more reliable solution. 
 
 On top of that, Stealth Mode is transparent and safe to use. No data at all is stored or used on our side, and the product itself is open source: https://github.com/AdguardTeam/StealthMode 
