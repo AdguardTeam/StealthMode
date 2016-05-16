@@ -128,6 +128,14 @@ var FilterRule = (function () {
         },
 
         /**
+         * Checks whether this rule is generic or domain specific
+         * @returns boolean true if rule is generic, otherwise false
+         */
+        isGeneric: function () {
+            return (!this.hasPermittedDomains());
+        },
+
+        /**
          * @returns boolean true if rule has permitted domains
          */
         hasPermittedDomains: function () {

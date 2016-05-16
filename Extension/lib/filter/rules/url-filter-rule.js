@@ -211,11 +211,17 @@ var UrlFilterRule = (function () {
                 case UrlFilterRule.ELEMHIDE_OPTION:
                     additionalContentType |= UrlFilterRule.contentTypes.ELEMHIDE;
                     break;
+                case UrlFilterRule.GENERICHIDE_OPTION:
+                    additionalContentType |= UrlFilterRule.contentTypes.GENERICHIDE;
+                    break;
                 case UrlFilterRule.JSINJECT_OPTION:
                     additionalContentType |= UrlFilterRule.contentTypes.JSINJECT;
                     break;
                 case UrlFilterRule.URLBLOCK_OPTION:
                     additionalContentType |= UrlFilterRule.contentTypes.URLBLOCK;
+                    break;
+                case UrlFilterRule.GENERICBLOCK_OPTION:
+                    additionalContentType |= UrlFilterRule.contentTypes.GENERICBLOCK;
                     break;
                 case UrlFilterRule.DOCUMENT_OPTION:
                     additionalContentType |= UrlFilterRule.contentTypes.DOCUMENT;
@@ -251,6 +257,7 @@ var UrlFilterRule = (function () {
     UrlFilterRule.MATCH_CASE_OPTION = "match-case";
     UrlFilterRule.DOCUMENT_OPTION = "document";
     UrlFilterRule.ELEMHIDE_OPTION = "elemhide";
+    UrlFilterRule.GENERICHIDE_OPTION = "generichide";
     UrlFilterRule.URLBLOCK_OPTION = "urlblock";
     UrlFilterRule.JSINJECT_OPTION = "jsinject";
     UrlFilterRule.POPUP_OPTION = "popup";
@@ -274,11 +281,15 @@ var UrlFilterRule = (function () {
         OBJECT: 1 << 4,
         SUBDOCUMENT: 1 << 5,
         XMLHTTPREQUEST: 1 << 6,
+        MEDIA: 1 << 8,
+        FONT: 1 << 9,
 
-        ELEMHIDE: 1 << 20,  //CssFilter cannot be applied to page
-        URLBLOCK: 1 << 21,  //This attribute is only for exception rules. If true - do not use urlblocking rules for urls where referrer satisfies this rule.
-        JSINJECT: 1 << 22,  //Does not inject javascript rules to page
-        POPUP: 1 << 23      //check block popups
+        ELEMHIDE: 1 << 20,      //CssFilter cannot be applied to page
+        URLBLOCK: 1 << 21,      //This attribute is only for exception rules. If true - do not use urlblocking rules for urls where referrer satisfies this rule.
+        JSINJECT: 1 << 22,      //Does not inject javascript rules to page
+        POPUP: 1 << 23,         //check block popups
+        GENERICHIDE: 1 << 24,   //CssFilter generic rules cannot be applied to page
+        GENERICBLOCK: 1 << 25   //UrlFilter generic rules cannot be applied to page
     };
 
     UrlFilterRule.ignoreOptions = {
@@ -310,6 +321,8 @@ var UrlFilterRule = (function () {
     UrlFilterRule.contentTypes.ALL |= UrlFilterRule.contentTypes.OBJECT;
     UrlFilterRule.contentTypes.ALL |= UrlFilterRule.contentTypes.SUBDOCUMENT;
     UrlFilterRule.contentTypes.ALL |= UrlFilterRule.contentTypes.XMLHTTPREQUEST;
+    UrlFilterRule.contentTypes.ALL |= UrlFilterRule.contentTypes.MEDIA;
+    UrlFilterRule.contentTypes.ALL |= UrlFilterRule.contentTypes.FONT;
 
     /**
      * Searches for domain name in rule text and transforms it to punycode if needed.
@@ -323,10 +336,30 @@ var UrlFilterRule = (function () {
                 return ruleText;
             }
 
+            var domain = parseRuleDomain(ruleText, true);
+            if (!domain) return "";
+
+            //In case of one domain
+            return StringUtils.replaceAll(ruleText, domain, UrlUtils.toPunyCode(domain));
+        } catch (ex) {
+            Log.error("Error getAsciiDomainRule from {0}, cause {1}", ruleText, ex);
+            return "";
+        }
+    }
+
+    /**
+     * Searches for domain name in rule text.
+     *
+     * @param ruleText Rule text
+     * @param parseOptions Flag to parse rule options
+     * @returns string domain name
+     */
+    function parseRuleDomain(ruleText, parseOptions) {
+        try {
             var i;
             var startsWith = ["http://www.", "https://www.", "http://", "https://", "||", "//"];
             var contains = ["/", "^"];
-            var startIndex = -1;
+            var startIndex = parseOptions ? -1 : 0;
 
             for (i = 0; i < startsWith.length; i++) {
                 var start = startsWith[i];
@@ -336,15 +369,17 @@ var UrlFilterRule = (function () {
                 }
             }
 
-            //exclusive for domain
-            var exceptRule = "domain=";
-            var domainIndex = ruleText.indexOf(exceptRule);
-            if (domainIndex > -1 && ruleText.indexOf("$") > -1) {
-                startIndex = domainIndex + exceptRule.length;
-            }
+            if (parseOptions) {
+                //exclusive for domain
+                var exceptRule = "domain=";
+                var domainIndex = ruleText.indexOf(exceptRule);
+                if (domainIndex > -1 && ruleText.indexOf("$") > -1) {
+                    startIndex = domainIndex + exceptRule.length;
+                }
 
-            if (startIndex === -1) {
-                return "";
+                if (startIndex == -1) {
+                    return "";
+                }
             }
 
             var symbolIndex = -1;
@@ -357,12 +392,10 @@ var UrlFilterRule = (function () {
                 }
             }
 
-            var domain = symbolIndex === -1 ? ruleText.substring(startIndex) : ruleText.substring(startIndex, symbolIndex);
-            //In case of one domain
-            return StringUtils.replaceAll(ruleText, domain, UrlUtils.toPunyCode(domain));
+            return symbolIndex == -1 ? ruleText.substring(startIndex) : ruleText.substring(startIndex, symbolIndex);
         } catch (ex) {
-            Log.error("Error getAsciiDomainRule from {0}, cause {1}", ruleText, ex);
-            return "";
+            Log.error("Error parsing domain from {0}, cause {1}", ruleText, ex);
+            return null;
         }
     }
 
@@ -425,9 +458,18 @@ var UrlFilterRule = (function () {
 
         var regex = escapeRegExp(urlRuleText);
 
-        regex = regex.substring(0, UrlFilterRule.MASK_START_URL.length) +
-        regex.substring(UrlFilterRule.MASK_START_URL.length, regex.length - 1).replace(/\|/, "\\|") +
-        regex.substring(regex.length - 1);
+        if (StringUtils.startWith(regex, UrlFilterRule.MASK_START_URL)) {
+            regex = regex.substring(0, UrlFilterRule.MASK_START_URL.length)
+                + StringUtils.replaceAll(regex.substring(UrlFilterRule.MASK_START_URL.length, regex.length - 1), "\|", "\\|")
+                + regex.substring(regex.length - 1);
+        } else if (StringUtils.startWith(regex, UrlFilterRule.MASK_PIPE)){
+            regex = regex.substring(0, UrlFilterRule.MASK_PIPE.length)
+                + StringUtils.replaceAll(regex.substring(UrlFilterRule.MASK_PIPE.length, regex.length - 1), "\|", "\\|")
+                + regex.substring(regex.length - 1);
+        } else {
+            regex = StringUtils.replaceAll(regex.substring(0, regex.length - 1), "\|", "\\|")
+                + regex.substring(regex.length - 1);
+        }
 
         // Replacing special url masks
         regex = StringUtils.replaceAll(regex, UrlFilterRule.MASK_ANY_SYMBOL, UrlFilterRule.REGEXP_ANY_SYMBOL);
@@ -441,6 +483,7 @@ var UrlFilterRule = (function () {
         if (StringUtils.endWith(regex, UrlFilterRule.MASK_PIPE)) {
             regex = regex.substring(0, regex.length - 1) + UrlFilterRule.REGEXP_END_STRING;
         }
+
         return regex;
     }
 
