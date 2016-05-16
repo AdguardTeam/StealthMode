@@ -247,7 +247,7 @@ var antiBannerService = (function () {
          * @returns Rule created
          */
         addUserFilterRule: function (ruleText) {
-            var rule = FilterRule.createRule(ruleText);
+            var rule = FilterRuleBuilder.createRule(ruleText);
             if (rule) {
                 this._addRuleToFilter(AntiBannerFiltersId.USER_FILTER_ID, rule);
                 this.userRules.push(rule.ruleText);
@@ -263,7 +263,7 @@ var antiBannerService = (function () {
         addUserFilterRules: function (rulesToAdd) {
             var rules = [];
             for (var i = 0; i < rulesToAdd.length; i++) {
-                var rule = FilterRule.createRule(rulesToAdd[i]);
+                var rule = FilterRuleBuilder.createRule(rulesToAdd[i]);
                 if (rule) {
                     rules.push(rule);
                     this.userRules.push(rule.ruleText);
@@ -278,7 +278,7 @@ var antiBannerService = (function () {
          * @param ruleText Rule text
          */
         removeUserFilter: function (ruleText) {
-            var rule = FilterRule.createRule(ruleText);
+            var rule = FilterRuleBuilder.createRule(ruleText);
             if (rule) {
                 var filter = this._getFilterById(AntiBannerFiltersId.USER_FILTER_ID);
                 this.requestFilter.removeRule(rule);
@@ -323,7 +323,7 @@ var antiBannerService = (function () {
                 // Domain is not valid, doing nothing
                 return null;
             }
-            var rule = FilterRule.createRule("@@//" + domain + "^$document");
+            var rule = FilterRuleBuilder.createRule("@@//" + domain + "^$document");
             if (rule) {
                 // Add rule to the request filter
                 this._addRuleToFilter(AntiBannerFiltersId.WHITE_LIST_FILTER_ID, rule);
@@ -350,7 +350,7 @@ var antiBannerService = (function () {
                     // First validate it
                     continue;
                 }
-                var rule = FilterRule.createRule("@@//" + domain + "^$document");
+                var rule = FilterRuleBuilder.createRule("@@//" + domain + "^$document");
                 if (rule) {
                     rules.push(rule);
                     this.whiteListDomains.push(domain);
@@ -373,7 +373,7 @@ var antiBannerService = (function () {
             if (!domain) {
                 return;
             }
-            var rule = FilterRule.createRule("@@//" + domain + "^$document");
+            var rule = FilterRuleBuilder.createRule("@@//" + domain + "^$document");
             if (rule) {
                 // Remove rule from the RequestFilter first
                 var filter = this._getFilterById(AntiBannerFiltersId.WHITE_LIST_FILTER_ID);

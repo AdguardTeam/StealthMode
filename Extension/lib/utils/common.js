@@ -160,7 +160,7 @@ var CollectionUtils = (function () {
                     if (ruleText in processed) {
                         continue;
                     }
-                    var rule = FilterRule.createRule(ruleText);
+                    var rule = FilterRuleBuilder.createRule(ruleText);
                     if (rule) {
                         rule.filterId = Number(filterId);
                         rules.push(rule);
