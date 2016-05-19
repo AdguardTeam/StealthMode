@@ -19,10 +19,7 @@
 
 var FilterRuleBuilder = (function () {
 
-    var FilterRuleBuilder = function() {};
-
-    FilterRuleBuilder.prototype = {
-
+    return {
         /**
          * Method that parses rule text and creates object of a suitable class.
          *
@@ -63,7 +60,5 @@ var FilterRuleBuilder = (function () {
             return rule;
         }
     };
-
-    return FilterRuleBuilder;
 
 })();
