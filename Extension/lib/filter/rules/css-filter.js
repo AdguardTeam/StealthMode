@@ -91,18 +91,31 @@ var CssFilter = (function () {
             this.dirty = true;
         },
 
-
         /**
          * Builds CSS to be injected to the page.
          * This method builds CSS for element hiding rules only:
          * http://adguard.com/en/filterrules.html#hideRules
          *
-         * @param domainName Domain name
+         * @param domainName    Domain name
+         * @param genericHide    flag to hide common rules
          * @returns Stylesheet content
          */
-        buildCss: function (domainName) {
+        buildCss: function (domainName, genericHide) {
             this._rebuild();
-            var css = this._buildCssByRules(this._getDomainSensitiveRules(domainName));
+
+            var domainRules = this._getDomainSensitiveRules(domainName);
+            if (genericHide) {
+                var nonGenericRules = [];
+                if (domainRules != null) {
+                    nonGenericRules = domainRules.filter(function (rule) {
+                        return !rule.isGeneric();
+                    });
+                }
+
+                return this._buildCssByRules(nonGenericRules);
+            }
+
+            var css = this._buildCssByRules(domainRules);
             return this._getCommonCss().concat(css);
         },
 

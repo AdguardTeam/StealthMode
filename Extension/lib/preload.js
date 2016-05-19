@@ -77,7 +77,7 @@
          * @param response
          */
         processCssAndScriptsResponse: function (response) {
-            if (!response || response.requestFilterReady === false) {
+            if (!response || response.isRequestFilterReady() === false) {
                 // This flag means that requestFilter is not yet initialized
                 // This is possible only on browser startup.
                 // In this case we'll delay injections until extension is fully initialized.

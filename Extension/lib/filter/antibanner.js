@@ -52,8 +52,8 @@ var antiBannerService = (function () {
         //retrieve filtering state
         this.applicationFilteringDisabled = userSettings.isFilteringDisabled();
 
-        //Service is not initialized yet
-        this.requestFilterReady = false;
+        // Service is not initialized yet
+        this._requestFilterInitTime = 0;
     };
 
     /**
@@ -96,8 +96,10 @@ var antiBannerService = (function () {
                     this.initializeFiltersOnInstall();
                 }
 
-                //set request filter is ready
-                this.requestFilterReady = true;
+                if (this._requestFilterInitTime === 0) {
+                    // Setting the time of request filter very first initialization
+                    this._requestFilterInitTime = new Date().getTime();
+                }
 
             }.bind(this);
 
@@ -154,6 +156,29 @@ var antiBannerService = (function () {
 
             //enable selected filters
             this._addAndEnableFilters(filterIds, callback);
+        },
+
+        /**
+         * @returns boolean true when request filter was initialized first time
+         */
+        isRequestFilterReady: function () {
+            return this._requestFilterInitTime > 0;
+        },
+
+        /**
+         * When browser just started we need some time on request filter initialization.
+         * This could be a problem in case when browser has a homepage and it is just started.
+         * In this case request filter is not yet initalized so we don't block requests and inject css.
+         * To fix this, content script will repeat requests for selectors until request filter is ready
+         * and it will also collapse all elements which should have been blocked.
+         *
+         * @returns boolean true if we should collapse elements with content script
+         */
+        shouldCollapseAllElements: function () {
+            // We assume that if content script is requesting CSS in first 3 seconds after request filter init,
+            // then it is possible, that we've missed some elements and now we should collapse these elements
+            return (this._requestFilterInitTime > 0) &&
+                (this._requestFilterInitTime + 3000 > new Date().getTime());
         },
 
         /**

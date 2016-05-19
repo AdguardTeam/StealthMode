@@ -139,11 +139,12 @@ var RequestFilter = (function () {
          * http://adguard.com/en/filterrules.html#hideRules
          *
          * @param url Page URL
-         * @returns Stylesheet ready to be injected
+         * @param genericHide flag to hide common rules
+         * @returns CSS ready to be injected
          */
-        getSelectorsForUrl: function (url) {
+        getSelectorsForUrl: function (url, genericHide) {
             var domain = UrlUtils.getDomainName(url);
-            return this.cssFilter.buildCss(domain);
+            return this.cssFilter.buildCss(domain, genericHide);
         },
 
         /**

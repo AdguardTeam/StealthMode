@@ -37,7 +37,7 @@
 
     function getUserSettings() {
 
-        if (!antiBannerService.requestFilterReady) {
+        if (!antiBannerService.isRequestFilterReady()) {
             return {requestFilterReady: false};
         }
 
