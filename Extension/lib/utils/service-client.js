@@ -242,6 +242,7 @@ var ServiceClient = (function () {
             var request = new XMLHttpRequest();
             request.open('GET', url);
             request.setRequestHeader('Content-type', contentType);
+            request.setRequestHeader('Pragma', 'no-cache');
             request.overrideMimeType(contentType);
             if (successCallback) {
                 request.onload = function () {

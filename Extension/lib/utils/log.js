@@ -26,8 +26,9 @@ var Log = (function () {
 
     var LogLevels = {
         'ERROR': 1,
-        'INFO': 2,
-        'DEBUG': 3
+        'WARN': 2,
+        'INFO': 3,
+        'DEBUG': 4
     };
 
     return {
@@ -42,6 +43,10 @@ var Log = (function () {
             this._print("INFO", "info", arguments);
         },
 
+        warn: function(){
+            this._print("WARN", "info", arguments);
+        },
+
         error: function () {
             this._print("ERROR", "error", arguments);
         },
@@ -54,13 +59,14 @@ var Log = (function () {
             if (!args || args.length === 0 || !args[0]) {
                 return;
             }
-            var str = args[0];
+            var str = args[0] + "";
             args = Array.prototype.slice.call(args, 1);
             var formatted = str.replace(/{(\d+)}/g, function (match, number) {
                 return typeof  args[number] !== "undefined" ? args[number] : match;
             });
             if (LogLevels[level] >= LogLevels.INFO) {
-                formatted = (new Date().toUTCString()) + ": " + formatted;
+                var now = new Date();
+                formatted = now.toISOString() + ": " + formatted;
             }
             console[method](formatted);
         }
