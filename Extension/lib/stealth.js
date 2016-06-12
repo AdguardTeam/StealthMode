@@ -104,6 +104,14 @@ var stealthService = (function () {
                 return;
             }
 
+            console.log('Looking for stealth rule for ' + requestUrl + ' referrer: ' + sourceUrl);
+            var stealthWhiteListRule = antiBannerService.getRequestFilter().findWhiteListRule(requestUrl, sourceUrl, "STEALTH")
+                || antiBannerService.getRequestFilter().findWhiteListRule(sourceUrl, sourceUrl, "STEALTH");
+            if (stealthWhiteListRule) {
+                console.log('Stealth rule ' + stealthWhiteListRule.ruleText + ' found for request: ' + requestUrl + ' referrer: ' + sourceUrl);
+                return;
+            }
+
             if (!requestDetails.requestHeaders) {
                 requestDetails.requestHeaders = [];
             }
