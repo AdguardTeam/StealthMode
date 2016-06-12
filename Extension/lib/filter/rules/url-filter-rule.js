@@ -259,6 +259,7 @@ var UrlFilterRule = (function () {
     UrlFilterRule.ELEMHIDE_OPTION = "elemhide";
     UrlFilterRule.GENERICHIDE_OPTION = "generichide";
     UrlFilterRule.URLBLOCK_OPTION = "urlblock";
+    UrlFilterRule.GENERICBLOCK_OPTION = "genericblock";
     UrlFilterRule.JSINJECT_OPTION = "jsinject";
     UrlFilterRule.POPUP_OPTION = "popup";
     UrlFilterRule.MASK_START_URL = "||";
