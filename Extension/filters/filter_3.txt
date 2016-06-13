@@ -3752,5 +3752,3 @@ mozilla-russia.org#@#img[width="88"][height="31"]
 @@||reseguiden.se^*.siteCatalyst.js
 ! Turkey
 @@||tvyo.com/player/plugins/comscorePlugin.swf?$object-subrequest
-! Testing
-@@||whatismyipaddress.com^$stealth
