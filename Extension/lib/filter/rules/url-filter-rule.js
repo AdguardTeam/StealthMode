@@ -223,6 +223,9 @@ var UrlFilterRule = (function () {
                 case UrlFilterRule.POPUP_OPTION:
                     additionalContentType |= UrlFilterRule.contentTypes.POPUP;
                     break;
+                case UrlFilterRule.STEALTH_OPTION:
+                    additionalContentType |= UrlFilterRule.contentTypes.STEALTH;
+                    break;
                 default:
                     optionName = optionName.toUpperCase();
                     if (optionName in UrlFilterRule.contentTypes) {
@@ -254,6 +257,7 @@ var UrlFilterRule = (function () {
     UrlFilterRule.URLBLOCK_OPTION = "urlblock";
     UrlFilterRule.JSINJECT_OPTION = "jsinject";
     UrlFilterRule.POPUP_OPTION = "popup";
+    UrlFilterRule.STEALTH_OPTION = "stealth";
     UrlFilterRule.MASK_START_URL = "||";
     UrlFilterRule.MASK_PIPE = "|";
     UrlFilterRule.MASK_ANY_SYMBOL = "*";
@@ -278,7 +282,8 @@ var UrlFilterRule = (function () {
         ELEMHIDE: 1 << 20,  //CssFilter cannot be applied to page
         URLBLOCK: 1 << 21,  //This attribute is only for exception rules. If true - do not use urlblocking rules for urls where referrer satisfies this rule.
         JSINJECT: 1 << 22,  //Does not inject javascript rules to page
-        POPUP: 1 << 23      //check block popups
+        POPUP: 1 << 23,     //check block popups
+        STEALTH: 1 << 24    //turn off stealth mode for page
     };
 
     UrlFilterRule.ignoreOptions = {

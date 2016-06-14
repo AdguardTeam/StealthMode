@@ -104,6 +104,12 @@ var stealthService = (function () {
                 return;
             }
 
+            var stealthWhiteListRule = antiBannerService.getRequestFilter().findWhiteListRule(requestUrl, sourceUrl, "STEALTH")
+                || antiBannerService.getRequestFilter().findWhiteListRule(sourceUrl, sourceUrl, "STEALTH");
+            if (stealthWhiteListRule) {
+                return;
+            }
+
             if (!requestDetails.requestHeaders) {
                 requestDetails.requestHeaders = [];
             }
