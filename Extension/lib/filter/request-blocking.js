@@ -26,41 +26,58 @@ var webRequestService = (function () {
 
     /**
      * Prepares CSS and JS which should be injected to the page.
+     *
      * @param tab           Tab
      * @param documentUrl   Document URL
-     * @returns {*}
+     * @returns {*} null or object the following properties: "selectors", "scripts", "collapseAllElements"
      */
     WebRequestService.prototype.processGetSelectorsAndScripts = function (tab, documentUrl) {
 
+        var result = {};
+
         if (!tab) {
-            return null;
+            return result;
         }
 
-        if (!antiBannerService.requestFilterReady) {
-            return {requestFilterReady: false};
+        if (!antiBannerService.isRequestFilterReady()) {
+            return {
+                requestFilterReady: false
+            };
         }
 
         if (framesMap.isTabProtectionDisabled(tab) || framesMap.isTabWhiteListed(tab)) {
-            return null;
+            return result;
         }
 
-        var selectors = null;
-        var scripts = null;
+        result = {
+            selectors: null,
+            scripts: null,
+            collapseAllElements: antiBannerService.shouldCollapseAllElements(),
+            useShadowDom: Utils.isShadowDomSupported()
+        };
 
+        var genericHideRule = antiBannerService.getRequestFilter().findWhiteListRule(documentUrl, documentUrl, "GENERICHIDE");
         var elemHideRule = antiBannerService.getRequestFilter().findWhiteListRule(documentUrl, documentUrl, "ELEMHIDE");
         if (!elemHideRule) {
-            selectors = antiBannerService.getRequestFilter().getSelectorsForUrl(documentUrl);
+            result.selectors = antiBannerService.getRequestFilter().getSelectorsForUrl(documentUrl, genericHideRule);
         }
 
         var jsInjectRule = antiBannerService.getRequestFilter().findWhiteListRule(documentUrl, documentUrl, "JSINJECT");
         if (!jsInjectRule) {
-            scripts = antiBannerService.getRequestFilter().getScriptsForUrl(documentUrl);
+            result.scripts = antiBannerService.getRequestFilter().getScriptsForUrl(documentUrl);
         }
 
-        return {
-            selectors: selectors,
-            scripts: scripts
-        };
+        return result;
+    };
+
+    WebRequestService.prototype.checkWebSocketRequest = function (tab, requestUrl, referrerUrl, requestType) {
+
+        if (!tab) {
+            return false;
+        }
+
+        var requestRule = this.getRuleForRequest(tab, requestUrl, referrerUrl, requestType);
+        return this.isRequestBlockedByRule(requestRule);
     };
 
     WebRequestService.prototype.processShouldCollapse = function (tab, requestUrl, referrerUrl, requestType) {
@@ -89,14 +106,10 @@ var webRequestService = (function () {
     };
 
     WebRequestService.prototype.isRequestBlockedByRule = function (requestRule) {
-        return requestRule && !requestRule.whiteListRule ? true : false;
+        return requestRule && !requestRule.whiteListRule;
     };
 
     WebRequestService.prototype.getRuleForRequest = function (tab, requestUrl, referrerUrl, requestType) {
-
-        if (!UrlUtils.isHttpRequest(requestUrl) || !UrlUtils.isHttpRequest(referrerUrl)) {
-            return null;
-        }
 
         if (framesMap.isTabProtectionDisabled(tab)) {
             //don't process request

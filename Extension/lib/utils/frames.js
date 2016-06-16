@@ -199,12 +199,13 @@ var framesMap = (function () {
          */
         this.updateBlockedAdsCount = function (tab, blocked) {
             var frameData = this.getMainFrame(tab);
-            if (frameData) {
-                frameData.blocked = (frameData.blocked || 0) + blocked;
-                pageStatistic.updateTotalBlocked(blocked);
-                return frameData.blocked;
+            if (!frameData) {
+                return null;
             }
-            return null;
+
+            frameData.blocked = (frameData.blocked || 0) + blocked;
+            pageStatistic.updateTotalBlocked(blocked);
+            return frameData.blocked;
         };
 
         /**

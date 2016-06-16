@@ -128,6 +128,14 @@ var FilterRule = (function () {
         },
 
         /**
+         * Checks whether this rule is generic or domain specific
+         * @returns boolean true if rule is generic, otherwise false
+         */
+        isGeneric: function () {
+            return (!this.hasPermittedDomains());
+        },
+
+        /**
          * @returns boolean true if rule has permitted domains
          */
         hasPermittedDomains: function () {
@@ -199,48 +207,6 @@ var FilterRule = (function () {
                 this.setRestrictedDomains(restrictedDomains);
             }
         }
-    };
-
-    /**
-     * Method that parses rule text and creates object of a suitable class.
-     *
-     * @param ruleText Rule text
-     * @returns Filter rule object. Either UrlFilterRule or CssFilterRule or ScriptFilterRule.
-     */
-    FilterRule.createRule = function (ruleText) {
-
-        ruleText = ruleText ? ruleText.trim() : null;
-        if (!ruleText) {
-            return null;
-        }
-        var rule = null;
-        try {
-            if (StringUtils.isEmpty(ruleText) || StringUtils.startWith(ruleText, FilterRule.COMMENT)) {
-                // Empty or comment, ignore
-                return null;
-            } else if (StringUtils.contains(ruleText, FilterRule.OLD_INJECT_RULES)) {
-                return rule;
-            } else if (StringUtils.startWith(ruleText, FilterRule.MASK_WHITE_LIST)) {
-                rule = new UrlFilterRule(ruleText);
-            } else if (StringUtils.contains(ruleText, FilterRule.MASK_CONTENT_RULE)) {
-                //not supported
-                return null;
-            } else if (StringUtils.contains(ruleText, FilterRule.MASK_CSS_RULE) || StringUtils.contains(ruleText, FilterRule.MASK_CSS_EXCEPTION_RULE)) {
-                rule = new CssFilterRule(ruleText);
-            } else if (StringUtils.contains(ruleText, FilterRule.MASK_CSS_INJECT_RULE) || StringUtils.contains(ruleText, FilterRule.MASK_CSS_EXCEPTION_INJECT_RULE)) {
-                rule = new CssFilterRule(ruleText);
-            } else if (StringUtils.contains(ruleText, FilterRule.MASK_JS_RULE)) {
-                //not supported
-                return null;
-            } else if (StringUtils.contains(ruleText, FilterRule.MASK_SCRIPT_RULE) || StringUtils.contains(ruleText, FilterRule.MASK_SCRIPT_EXCEPTION_RULE)) {
-                rule = new ScriptFilterRule(ruleText);
-            } else {
-                rule = new UrlFilterRule(ruleText);
-            }
-        } catch (ex) {
-            Log.error("Error create rule from {0}, cause {1}", ruleText, ex);
-        }
-        return rule;
     };
 
     FilterRule.PARAMETER_START = "[";

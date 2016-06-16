@@ -35,6 +35,11 @@ var StringUtils = (function () {
             if (!str || !postfix) {
                 return false;
             }
+
+            if (str.endsWith) {
+                return str.endsWith(postfix);
+            }
+
             var t = String(postfix);
             var index = str.lastIndexOf(t);
             return index >= 0 && index === str.length - t.length;
@@ -46,6 +51,18 @@ var StringUtils = (function () {
             }
             var index = str.indexOf(separator);
             return index < 0 ? "" : str.substring(index + separator.length);
+        },
+
+        substringBefore: function (str, separator) {
+            if (!str || !separator) {
+                return str;
+            }
+            var index = str.indexOf(separator);
+            return index < 0 ? str : str.substring(0, index);
+        },
+
+        endWithIgnoreCase: function (str, postfix) {
+            return str && postfix && StringUtils.endWith(str.toUpperCase(), postfix.toUpperCase());
         },
 
         contains: function (str, searchString) {
@@ -141,34 +158,6 @@ var CollectionUtils = (function () {
                 text.push(collection[i].ruleText);
             }
             return text;
-        },
-
-        getRulesFromTextAsyncUnique: function (rulesFilterMap, FilterRule, callback) {
-            callback(this.getRulesFromTextUnique(rulesFilterMap, FilterRule));
-        },
-
-        getRulesFromTextUnique: function (rulesFilterMap, FilterRule) {
-
-            var rules = [];
-
-            var processed = Object.create(null);
-
-            for (var filterId in rulesFilterMap) { // jshint ignore:line
-                var rulesText = rulesFilterMap[filterId];
-                for (var i = 0; i < rulesText.length; i++) {
-                    var ruleText = rulesText[i];
-                    if (ruleText in processed) {
-                        continue;
-                    }
-                    var rule = FilterRule.createRule(ruleText);
-                    if (rule) {
-                        rule.filterId = Number(filterId);
-                        rules.push(rule);
-                    }
-                    processed[ruleText] = null;
-                }
-            }
-            return rules;
         }
     };
 })();
@@ -247,60 +236,6 @@ var Utils = (function () {
             return null;
         },
 
-        getFiltersUpdateResultMessage: function (i18nGetMessage, success, updatedFilters) {
-            var title = i18nGetMessage("options_popup_update_title");
-            var text = [];
-            if (success) {
-                if (updatedFilters.length === 0) {
-                    text.push(i18nGetMessage("options_popup_update_not_found"));
-                } else {
-                    updatedFilters.sort(function (a, b) {
-                        return a.displayNumber - b.displayNumber;
-                    });
-                    for (var i = 0; i < updatedFilters.length; i++) {
-                        var filter = updatedFilters[i];
-                        text.push(i18nGetMessage("options_popup_update_updated", [filter.name, filter.version]).replace("$1", filter.name).replace("$2", filter.version));
-                    }
-                }
-            } else {
-                text.push(i18nGetMessage("options_popup_update_error"));
-            }
-
-            return {
-                title: title,
-                text: text
-            };
-        },
-
-        getFiltersEnabledResultMessage: function (i18nGetMessage, enabledFilters) {
-            var title = i18nGetMessage("alert_popup_filter_enabled_title");
-            var text = [];
-            enabledFilters.sort(function (a, b) {
-                return a.displayNumber - b.displayNumber;
-            });
-            for (var i = 0; i < enabledFilters.length; i++) {
-                var filter = enabledFilters[i];
-                text.push(i18nGetMessage("alert_popup_filter_enabled_text", [filter.name]).replace("$1", filter.name));
-            }
-            return {
-                title: title,
-                text: text
-            };
-        },
-
-        /**
-         * Used for text formatting on UI side.
-         *
-         * @returns {*}
-         */
-        getSupportedLocale: function () {
-            var locale = Prefs.locale;
-            if (supportedLocales.indexOf(locale) < 0) {
-                locale = "en";
-            }
-            return locale;
-        },
-
         /**
          * Checks if specified object is array
          * We don't use instanceof because it is too slow: http://jsperf.com/instanceof-performance/2
@@ -308,6 +243,19 @@ var Utils = (function () {
          */
         isArray: Array.isArray || function (obj) {
             return '' + obj === '[object Array]';
+        },
+
+        /**
+         * Returns true if Shadow DOM is supported.
+         * http://caniuse.com/#feat=shadowdom
+         *
+         * In this case we transform CSS selectors and inject CSS to shadow DOM.
+         * https://github.com/AdguardTeam/AdguardBrowserExtension/issues/44
+         */
+        isShadowDomSupported: function() {
+
+            // Shadow DOM is supported by all modern chromium browsers
+            return true;
         }
     };
 })();
@@ -386,6 +334,7 @@ var EventNotifierTypes = {
     ENABLE_FILTER_SHOW_POPUP: "event.enable.filter.show.popup",
     LOG_EVENT: "event.log.track",
     UPDATE_TAB_BUTTON_STATE: "event.update.tab.button.state",
+    REQUEST_FILTER_UPDATED: "event.request.filter.updated",
     REBUILD_REQUEST_FILTER_END: "event.rebuild.request.filter.end",
     CHANGE_USER_SETTINGS: "event.change.user.settings",
     UPDATE_FILTERS_SHOW_POPUP: "event.update.filters.show.popup"

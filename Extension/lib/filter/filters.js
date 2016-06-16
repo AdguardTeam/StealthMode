@@ -139,11 +139,12 @@ var RequestFilter = (function () {
          * http://adguard.com/en/filterrules.html#hideRules
          *
          * @param url Page URL
-         * @returns Stylesheet ready to be injected
+         * @param genericHide flag to hide common rules
+         * @returns CSS ready to be injected
          */
-        getSelectorsForUrl: function (url) {
+        getSelectorsForUrl: function (url, genericHide) {
             var domain = UrlUtils.getDomainName(url);
-            return this.cssFilter.buildCss(domain);
+            return this.cssFilter.buildCss(domain, genericHide);
         },
 
         /**
@@ -253,17 +254,19 @@ var RequestFilter = (function () {
          * Checks if there is a rule blocking this request
          *
          * @param requestUrl    Request URL
-         * @param referrer      Referrer
+         * @param refHost       Referrer host
          * @param requestType   Request content type (one of UrlFilterRule.contentTypes)
          * @param thirdParty    Is request third-party or not
+         * @param genericRulesAllowed    Is generic rules allowed
          * @returns Filter rule found or null
          * @private
          */
-        _checkUrlBlockingList: function (requestUrl, referrer, requestType, thirdParty) {
-            if (!this.urlBlockingFilter || StringUtils.isEmpty(requestUrl)) {
+        _checkUrlBlockingList: function (requestUrl, refHost, requestType, thirdParty, genericRulesAllowed) {
+            if (this.urlBlockingFilter == null || StringUtils.isEmpty(requestUrl)) {
                 return null;
             }
-            return this.urlBlockingFilter.isFiltered(requestUrl, referrer, requestType, thirdParty);
+
+            return this.urlBlockingFilter.isFiltered(requestUrl, refHost, requestType, thirdParty, !genericRulesAllowed);
         },
 
         /**
@@ -282,23 +285,25 @@ var RequestFilter = (function () {
             Log.debug("Filtering http request for url: {0}, referrer: {1}, requestType: {2}", requestUrl, refHost, requestType);
 
             var urlWhiteRule = this._checkWhiteList(requestUrl, refHost, requestType, thirdParty);
-            if (urlWhiteRule) {
+            if (urlWhiteRule != null) {
                 Log.debug("White list rule found {0} for url: {1} referrer: {2}, requestType: {3}", urlWhiteRule.ruleText, requestUrl, refHost, requestType);
                 return urlWhiteRule;
             }
 
             var referrerWhiteRule = this._checkWhiteList(referrer, refHost, "URLBLOCK", thirdParty);
-            if (referrerWhiteRule) {
+            if (referrerWhiteRule != null) {
                 Log.debug("White list rule {0} found for referrer: {1}", referrerWhiteRule.ruleText, referrer);
                 return referrerWhiteRule;
             }
 
-            var rule = this._checkUrlBlockingList(requestUrl, refHost, requestType, thirdParty);
-            if (rule) {
+            var genericUrlBlockRule = this._checkWhiteList(referrer, refHost, "GENERICBLOCK", thirdParty);
+            var rule = this._checkUrlBlockingList(requestUrl, refHost, requestType, thirdParty, !genericUrlBlockRule);
+            if (rule != null) {
                 Log.debug("Black list rule {0} found for url: {1}, referrer: {2}, requestType: {3}", rule.ruleText, requestUrl, refHost, requestType);
+                return rule;
             }
 
-            return rule;
+            return genericUrlBlockRule;
         },
 
         /**
