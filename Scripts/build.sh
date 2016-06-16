@@ -2,7 +2,7 @@
 
 env=$1
 
-version="1.0.9"
+version="1.1.0"
 buildName=stealth-${version}
 buildDir=Build/${buildName}
 
