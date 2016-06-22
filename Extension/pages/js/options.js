@@ -345,7 +345,7 @@
 
             chrome.runtime.sendMessage({type: 'load-user-settings'}, function (result) {
 
-                if (result.isRequestFilterReady() === false) {
+                if (result.isRequestFilterReady === false) {
                     setTimeout(init, 200);
                     return;
                 }
