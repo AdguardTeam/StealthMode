@@ -1,10 +1,10 @@
 ! Title: Social media filter
-! Version: 1.0.10.25
+! Version: 1.0.10.34
 ! Name: Social media filter
 ! Description: Filter for social media widgets (Like buttons and such).
 ! NameEn: Social media filter
 ! DescriptionEn: Filter for social media widgets (Like buttons and such).
-! TimeUpdated: 2016-06-16T02:00:39.434+03:00
+! TimeUpdated: 2016-06-21T20:00:46.119+03:00
 ! Title: Adguard Social Media Filter
 !
 ! If you do not like numerous «Like» and «Tweet» buttons on all the popular websites on the Internet,
@@ -276,6 +276,16 @@ softwares-serials.in#$##FTslide { visibility: hidden;!important; }
 ! https://github.com/AdguardTeam/ExperimentalFilter/issues/2146
 ||mimimi.tv/?*=*&_=
 !
+uberhavoc.com##.fb-like-box
+ozgurgorgulu.com##body > div#popup
+rtl.nl##.b_socialbar
+livescience.com###stickyShare
+||nichosy.ru/wp-content/plugins/wordpress-popup/js/public.min.js
+wikia.com##.share-wrapper
+softpedia.com##div[class^="hdsocial"]
+mindbodygreen.com##.article-social-toolbar
+mindbodygreen.com###articleShareFloats
+mindbodygreen.com##.article-social-toolbar.show-for-small-only
 prokazan.ru###vk_groupsVK
 imageshack.us###Actions
 meduza.io###DailySubscriber
@@ -1675,6 +1685,8 @@ bitiworld.com##a[title="share on twitter"]
 !
 ! Section fixing issues caused by social filter
 !
+! https://github.com/AdguardTeam/AdguardFilters/issues/2320
+@@||yastatic.net/share2/share.js$domain=biglion.ru
 ! https://github.com/AdguardTeam/AdguardFilters/issues/2264
 @@||yandex.st/share/share.js$domain=vnukovo.ru
 ! https://forum.adguard.com/index.php?threads/10597/
