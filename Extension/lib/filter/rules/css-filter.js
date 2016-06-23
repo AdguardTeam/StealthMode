@@ -24,6 +24,8 @@ var CssFilter = (function () {
 
     'use strict';
 
+    var isShadowDomSupported = Utils.isShadowDomSupported();
+
     var CssFilter = function (rules) {
 
         this.commonCss = null;
@@ -276,6 +278,10 @@ var CssFilter = (function () {
             return rules;
         },
 
+        _getRuleCssSelector: function (cssSelector) {
+            return isShadowDomSupported ? "::content " + cssSelector : cssSelector;
+        },
+
         /**
          * Builds CSS to be injected
          *
@@ -296,9 +302,9 @@ var CssFilter = (function () {
                 var rule = rules[i];
 
                 if (rule.isInjectRule) {
-                    cssSb.push(rule.cssSelector);
+                    cssSb.push(this._getRuleCssSelector(rule.cssSelector));
                 } else {
-                    elemHideSb.push(rule.cssSelector);
+                    elemHideSb.push(this._getRuleCssSelector(rule.cssSelector));
                     ++selectorsCount;
                     if (selectorsCount % CSS_SELECTORS_PER_LINE === 0) {
                         elemHideSb.push(ELEMHIDE_CSS_STYLE);

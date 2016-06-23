@@ -166,7 +166,7 @@
          */
         setStyleContent: function(styleEl, cssContent, useShadowDom) {
 
-            if (useShadowDom && !shadowRoot) {
+            if (useShadowDom && !this.shadowRoot) {
                 // Despite our will to use shadow DOM we cannot
                 // It is rare case, but anyway: https://code.google.com/p/chromium/issues/detail?id=496055
                 // The only thing we can do is to append styles to document root
