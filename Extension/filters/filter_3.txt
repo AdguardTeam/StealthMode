@@ -1,10 +1,10 @@
 ! Title: Spyware filter
-! Version: 1.0.6.41
+! Version: 1.0.6.42
 ! Name: Spyware filter
 ! Description: The most comprehensive list of various online counters and web analytics tools. If you do not want your actions on the Internet to be tracked, use this filter.
 ! NameEn: Spyware filter
 ! DescriptionEn: The most comprehensive list of various online counters and web analytics tools. If you do not want your actions on the Internet to be tracked, use this filter.
-! TimeUpdated: 2016-06-21T19:00:35.419+03:00
+! TimeUpdated: 2016-06-22T20:00:43.496+03:00
 ! Title: Adguard Spyware Filter
 !
 ! The most comprehensive list of various online counters and web analytics tools.
@@ -2913,6 +2913,7 @@ _tracking.php?b=
 !-------------- Specific web sites ---------------------------------------------!
 !-------------------------------------------------------------------------------!
 !
+||bild.rtrp13n.de/tracking/
 ||track.ad.nl^
 ||accounts.ad.nl/gscounters.sendReport
 ||static.iqiyi.com/js/pingback/
