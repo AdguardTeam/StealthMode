@@ -18,7 +18,7 @@
 /* global chrome, Prefs */
 
 chrome.storage.local.get(null, function (items) {
-    if (Prefs.chromiumVersion > 47) {
+    if (Prefs.browserVersion > 47) {
         if (items.rtcIPHandling == undefined) {
             chrome.storage.local.set({
                 rtcIPHandling: 'default_public_interface_only'
@@ -28,7 +28,7 @@ chrome.storage.local.get(null, function (items) {
                 });
             })
         }
-    } else if (Prefs.chromiumVersion > 41 && Prefs.chromiumVersion < 48) {
+    } else if (Prefs.browserVersion > 41 && Prefs.browserVersion < 48) {
         if (items.rtcMultipleRoutes == undefined) {
             chrome.storage.local.set({
                 rtcMultipleRoutes: true
