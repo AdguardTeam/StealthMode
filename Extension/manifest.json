@@ -46,6 +46,8 @@
     "webRequest",
     "webRequestBlocking",
     "webNavigation",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "privacy",
+    "storage"
   ]
 }
