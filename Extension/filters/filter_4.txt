@@ -1,10 +1,10 @@
 ! Title: Social media filter
-! Version: 1.0.10.37
+! Version: 1.0.10.62
 ! Name: Social media filter
 ! Description: Filter for social media widgets (Like buttons and such).
 ! NameEn: Social media filter
 ! DescriptionEn: Filter for social media widgets (Like buttons and such).
-! TimeUpdated: 2016-06-23T17:07:46.015+03:00
+! TimeUpdated: 2016-07-04T16:00:47.062+03:00
 ! Title: Adguard Social Media Filter
 !
 ! If you do not like numerous «Like» and «Tweet» buttons on all the popular websites on the Internet,
@@ -276,6 +276,30 @@ softwares-serials.in#$##FTslide { visibility: hidden;!important; }
 ! https://github.com/AdguardTeam/ExperimentalFilter/issues/2146
 ||mimimi.tv/?*=*&_=
 !
+piratecity.net##.share-before
+uaexpert.blogspot.ru###overlay
+thefreedictionary.com##a[class^="shr-"]
+politeka.net###soc-no-header
+depo.ua###js-article-image-share
+zagranitsa.com###facebookWindow
+filmrax.com###SociaLKare
+gazetevatan.com##.share
+torrent-kutusu.blogspot.com##.w2bslikebox
+torrent-kutusu.blogspot.com###share-post
+futbol24.com###facebookBox
+onedio.ru###fbbox
+onedio.ru##.modalpopupmask
+onedio.ru##.social-controls
+academic.ru##a[onclick^="share("]
+torrentmatik.com##.floatinglikebox
+torrentdukkani.com##.koddostufacee
+vancourier.com##span[onclick^="sendStatistic"]
+star.com.tr##.sharingwrap
+computerworlduk.com##.helpIcons
+haberdar.com##.page-share
+galacticbuzz.com##.vce-share-bar
+mamavika.com##body > div[class^="spu-"]
+onlinefilm.co###sag-facebook-tablo
 xeberle.com##.momizat-social_counter
 temperatur.nu##div[class^="FB-share"]
 musavat.com##.fancybox-wrap
@@ -1071,6 +1095,10 @@ komarovskiy.net##ul[class="social-bookmarks"]
 !
 ! Section contains list general hiding rules
 !
+##.socialContainer
+###sag-facebook-tablo
+##.sharing_controls
+##.social-sticky
 ##.social-shares
 ###ShareModule
 ###SocialButtons
@@ -1201,6 +1229,7 @@ komarovskiy.net##ul[class="social-bookmarks"]
 ~vk.com,~vkontakte.ru###vk_donate
 ~vk.com,~vkontakte.ru###vk_group
 ~redspell.ru,~vk.com,~vkontakte.ru###vk_groups
+###vk_like1
 ~vk.com,~vkontakte.ru###vk_like
 ~vk.com,~vkontakte.ru###vk_poll
 ~vk.com,~vkontakte.ru###vk_share
@@ -1688,6 +1717,8 @@ bitiworld.com##a[title="share on twitter"]
 !
 ! Section fixing issues caused by social filter
 !
+! https://forum.adguard.com/index.php?threads/11412/
+@@||make-3d.ru/wp-content/plugins/easy-vkontakte-connect/js/social-likes.min.js
 ! https://github.com/AdguardTeam/AdguardFilters/issues/2320
 @@||yastatic.net/share2/share.js$domain=biglion.ru
 ! https://github.com/AdguardTeam/AdguardFilters/issues/2264

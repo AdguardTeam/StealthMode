@@ -1,10 +1,10 @@
 ! Title: Spyware filter
-! Version: 1.0.6.42
+! Version: 1.0.6.52
 ! Name: Spyware filter
 ! Description: The most comprehensive list of various online counters and web analytics tools. If you do not want your actions on the Internet to be tracked, use this filter.
 ! NameEn: Spyware filter
 ! DescriptionEn: The most comprehensive list of various online counters and web analytics tools. If you do not want your actions on the Internet to be tracked, use this filter.
-! TimeUpdated: 2016-06-22T20:00:43.496+03:00
+! TimeUpdated: 2016-07-04T15:00:45.937+03:00
 ! Title: Adguard Spyware Filter
 !
 ! The most comprehensive list of various online counters and web analytics tools.
@@ -2790,6 +2790,8 @@ http://r.i.ua/s?
 !-------------- General (unsorted) url blocking --------------------------------!
 !-------------------------------------------------------------------------------!
 !
+/dynaTraceMonitor?
+/analysis-logger/*
 /zz.gif?url=
 /cp2.gif?
 .providesupport.com/cmd/*?ps_t=
@@ -2913,6 +2915,12 @@ _tracking.php?b=
 !-------------- Specific web sites ---------------------------------------------!
 !-------------------------------------------------------------------------------!
 !
+||counter.yadro.ru/hit?r
+||bing.com/c.gif?
+||bing.com/fd/ls/
+vc.ru###surfingbird-block
+||hm.com/global/session-tracking
+||ab-in-den-urlaub.de/usertracking
 ||bild.rtrp13n.de/tracking/
 ||track.ad.nl^
 ||accounts.ad.nl/gscounters.sendReport
@@ -3239,6 +3247,13 @@ washingtonpost.com##.social-tools-wrapper-bottom
 !-------------- Whitelist ------------------------------------------------------!
 !-------------------------------------------------------------------------------!
 !
+! http://forum.adguard.com/showthread.php?5974
+@@||mc.yandex.ru/metrika/watch.js$domain=101.ru
+! smartresponder.ru broken registration form
+@@||mc.yandex.ru/metrika/watch.js$domain=smartresponder.ru
+! https://github.com/AdguardTeam/AdguardFilters/issues/2460
+@@||static.webclicks24.com/js/common.js$domain=4porn.com
+@@||cdn.webclicks24.com^$domain=4porn.com,image
 ! https://forum.adguard.com/index.php?threads/11245/
 @@||apple.com/metrics/ac-analytics/*/scripts/$domain=apple.com
 ! https://forum.adguard.com/index.php?threads/11193/
