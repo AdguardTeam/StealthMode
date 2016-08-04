@@ -38,7 +38,7 @@ if [ "$env" = release ]; then
     zip -r Build/$buildName.zip  ${buildDir}
 
     #pack crx
-    source Scripts/crxmake.sh ${buildDir} Scripts/certificate.pem
+    source Scripts/crxmake.sh ${buildDir} extensions/StealthMode/certificate.pem
     mv $buildDir/$buildName.crx Build
     rm -rf $buildDir
 
