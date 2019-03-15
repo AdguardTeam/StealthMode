@@ -1,14 +1,14 @@
 # StealthMode
 
-##What is Stealth Mode?
+## What is Stealth Mode?
 
 Stealth Mode is a browser extension to stop all kinds of online trackers from receiving any information about you and your actions on the Internet.
 
-##Why do you need Stealth Mode?
+## Why do you need Stealth Mode?
 
 When you surf the web, a whole bunch of different companies track your actions, such as clicking, entering text or even hovering the mouse over something,  in order to get information about your preferences, personal tastes etc. Stealth Mode serves to protect your internet privacy. It hides your personal data and doesn't allow these companies to collect information about your actions on the web.
 
-##How it works?
+## How it works?
 
 Stealth Mode fulfils multiple tasks targeted at hiding your private information. 
 
@@ -29,7 +29,7 @@ Its database contains over 5000 different trackers and is regularly updated;
 
 - Hides your IP address. Stealth Mode can't completely hide it, but will disguise you so that the website you visit will consider you a proxy server.
 
-##Why is it better?
+## Why is it better?
 
 The major difference between Stealth Mode and popular blockers like ABP, Adguard, Ghostery and others, is that it takes a completely different approach to achieving online privacy. It doesn't physically block all the trackers. Instead, Stealth Mode simply prevents them from collecting any information. This turns into an advantage, because since all cookies and ETags are being blocked, even if a tracker has not been added to the database yet, it still won't be able to get any information, making Stealth Mode a more reliable solution. 
 
